@@ -67,7 +67,7 @@ The default PERIOD is 0.5 seconds.
 
                 period = int(args[0])
             except ValueError:
-                print("Invalid number \"%s\"" % args[0])
+                print("Invalid number \"%s\"." % args[0])
                 return
 
         def breaking_continue_handler(event):
