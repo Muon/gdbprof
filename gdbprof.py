@@ -98,7 +98,8 @@ The default PERIOD is 0.5 seconds.
                                       # it's reattached.
         gdb.execute("detach", to_string=True)
         gdb.execute("attach %d" % pid, to_string=True)
-        gdb.execute("continue")
+        os.kill(pid, signal.SIGCONT)
+        gdb.execute("continue", to_string=True)
 
 ProfileCommand()
 ProfileBeginCommand()
