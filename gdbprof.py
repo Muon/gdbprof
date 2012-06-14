@@ -36,11 +36,6 @@ def get_call_chain():
     return tuple(function_names)
 
 
-def breaking_continue_handler(event):
-    sleep(0.5)
-    os.kill(gdb.selected_inferior().pid, signal.SIGINT)
-
-
 class ProfileCommand(gdb.Command):
     """Wall clock time profiling leveraging gdb for better backtraces."""
 
@@ -62,6 +57,22 @@ The default PERIOD is 0.5 seconds.
 
     def invoke(self, argument, from_tty):
         self.dont_repeat()
+
+        period = 0.5
+
+        args = gdb.string_to_argv(argument)
+
+        if len(args) > 0:
+            try:
+
+                period = int(args[0])
+            except ValueError:
+                gdb.write("Invalid number \"%s\"" % args[0])
+                return
+
+        def breaking_continue_handler(event):
+            sleep(period)
+            os.kill(gdb.selected_inferior().pid, signal.SIGINT)
 
         call_chain_frequencies = defaultdict(int)
         sleeps = 0
