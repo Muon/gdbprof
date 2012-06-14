@@ -78,9 +78,11 @@ The default PERIOD is 0.5 seconds.
         sleeps = 0
 
         try:
-            gdb.events.cont.connect(breaking_continue_handler)
             while True:
+                gdb.events.cont.connect(breaking_continue_handler)
                 gdb.execute("continue", to_string=True)
+                gdb.events.cont.disconnect(breaking_continue_handler)
+
                 call_chain_frequencies[get_call_chain()] += 1
                 sleeps += 1
                 gdb.write(".")
