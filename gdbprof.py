@@ -89,6 +89,9 @@ The default PERIOD is 0.5 seconds.
             pass
         finally:
             gdb.events.cont.disconnect(breaking_continue_handler)
+            gdb.write("\nProfiling complete with %d samples.\n" % sleeps)
+            for call_chain, frequency in sorted(call_chain_frequencies.iteritems(), key=lambda x: x[1], reverse=True):
+                gdb.write("%d\t%s\n" % (frequency, '->'.join(str(i) for i in call_chain)))
 
         pid = gdb.selected_inferior().pid
         os.kill(pid, signal.SIGSTOP)  # Make sure the process does nothing until
@@ -96,10 +99,6 @@ The default PERIOD is 0.5 seconds.
         gdb.execute("detach", to_string=True)
         gdb.execute("attach %d" % pid, to_string=True)
         gdb.execute("continue")
-
-        gdb.write("\nProfiling complete in %d samples.\n" % sleeps)
-        for call_chain, frequency in sorted(call_chain_frequencies.iteritems(), key=lambda x: x[1], reverse=True):
-            gdb.write("%d\t%s\n" % (frequency, '->'.join(str(i) for i in call_chain)))
 
 ProfileCommand()
 ProfileBeginCommand()
