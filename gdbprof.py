@@ -67,7 +67,7 @@ The default PERIOD is 0.5 seconds.
 
                 period = int(args[0])
             except ValueError:
-                gdb.write("Invalid number \"%s\"" % args[0])
+                print("Invalid number \"%s\"" % args[0])
                 return
 
         def breaking_continue_handler(event):
@@ -89,9 +89,9 @@ The default PERIOD is 0.5 seconds.
             pass
         finally:
             gdb.events.cont.disconnect(breaking_continue_handler)
-            gdb.write("\nProfiling complete with %d samples.\n" % sleeps)
+            print("\nProfiling complete with %d samples." % sleeps)
             for call_chain, frequency in sorted(call_chain_frequencies.iteritems(), key=lambda x: x[1], reverse=True):
-                gdb.write("%d\t%s\n" % (frequency, '->'.join(str(i) for i in call_chain)))
+                print("%d\t%s" % (frequency, '->'.join(str(i) for i in call_chain)))
 
         pid = gdb.selected_inferior().pid
         os.kill(pid, signal.SIGSTOP)  # Make sure the process does nothing until
