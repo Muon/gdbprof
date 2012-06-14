@@ -91,8 +91,11 @@ The default PERIOD is 0.5 seconds.
             gdb.events.cont.disconnect(breaking_continue_handler)
 
         pid = gdb.selected_inferior().pid
+        os.kill(pid, signal.SIGSTOP)  # Make sure the process does nothing until
+                                      # it's reattached.
         gdb.execute("detach", to_string=True)
         gdb.execute("attach %d" % pid, to_string=True)
+        gdb.execute("continue")
 
         gdb.write("\nProfiling complete in %d samples.\n" % sleeps)
         for call_chain, frequency in sorted(call_chain_frequencies.iteritems(), key=lambda x: x[1], reverse=True):
