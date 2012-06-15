@@ -4,14 +4,14 @@ A wall clock time-based profiler powered by GDB and its Python API. Heavily
 inspired by [poor man's profiler](http://poormansprofiler.org/).
 
 Rationale
-=========
+---------
 If there's something strange in your neighborhood (like X consuming 75% CPU in
 `memcpy()` which `perf` can't trace), who you gonna call? `gdb`! Of course, if
 you're lazy like me, you don't want to spend too much time hitting
 <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 Caveats
-=======
+-------
 This is hack layered upon hack upon hack. See the source code if you want to
 know how it "works". With the current state of gdb's Python affairs, it's
 impossible to do it cleanly, but I think it's slightly better than an
@@ -23,7 +23,7 @@ you start it from `gdb`, as you need to interrupt `gdb`, not the process (I need
 to handle this better).
 
 Example
-=======
+-------
 ```
 (gdb) source gdbprof.py
 (gdb) profile begin
